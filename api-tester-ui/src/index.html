@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>API Tester</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    /* Global overlay fix for dropdowns */
+    .cdk-overlay-container .cdk-overlay-pane .mat-mdc-select-panel,
+    .cdk-overlay-container .mat-mdc-menu-panel,
+    .cdk-overlay-container .mat-mdc-autocomplete-panel {
+      background-color: #1e1e1e !important;
+      color: white !important;
+      border: 1px solid rgba(138, 43, 226, 0.3) !important;
+      border-radius: 8px !important;
+    }
+    
+    .mat-mdc-option .mdc-list-item__primary-text {
+      color: white !important;
+    }
+    
+    .mat-mdc-option:hover:not(.mdc-list-item--disabled) {
+      background-color: rgba(138, 43, 226, 0.1) !important;
+    }
+  </style>
+</head>
+<body class="mat-typography">
+  <app-root></app-root>
+</body>
+</html>

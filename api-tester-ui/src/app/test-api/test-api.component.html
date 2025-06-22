@@ -1,0 +1,146 @@
+<div class="api-tester-container api-tester-global">
+  <mat-card class="request-card glow-effect">
+    <mat-card-header>
+      <mat-card-title class="neon-text">API Tester</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <!-- Common URLs Selector -->
+      <div class="common-urls-container">
+        <mat-form-field class="common-urls">
+          <mat-label>Select API Endpoint</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let urlItem of commonUrls" [value]="urlItem.url" 
+                      (click)="selectCommonUrl(urlItem.url, urlItem.method)">
+              {{urlItem.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="url-method-container">
+        <mat-form-field class="method-selector">
+          <mat-label>Method</mat-label>
+          <mat-select [(ngModel)]="request.method">
+            <mat-option value="GET">GET</mat-option>
+            <mat-option value="POST">POST</mat-option>
+            <mat-option value="PUT">PUT</mat-option>
+            <mat-option value="DELETE">DELETE</mat-option>
+            <mat-option value="PATCH">PATCH</mat-option>
+            <mat-option value="HEAD">HEAD</mat-option>
+            <mat-option value="OPTIONS">OPTIONS</mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field class="url-input">
+          <mat-label>Request URL</mat-label>
+          <input matInput [(ngModel)]="request.url" placeholder="https://api.example.com/endpoint">
+          <mat-icon matSuffix>link</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <mat-tab-group animationDuration="300ms">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">view_list</mat-icon>
+            Headers
+          </ng-template>
+          <div class="headers-container">
+            <div class="header-option">
+              <mat-checkbox [(ngModel)]="addJsonContentType">Auto-add Content-Type: application/json</mat-checkbox>
+            </div>
+            
+            <div class="header-items-container">
+              <div class="header-item" *ngFor="let header of headerItems; let i = index">
+                <mat-form-field class="header-key">
+                  <mat-label>Key</mat-label>
+                  <input matInput [(ngModel)]="header.key" placeholder="">
+                </mat-form-field>
+                
+                <mat-form-field class="header-value">
+                  <mat-label>Value</mat-label>
+                  <input matInput [(ngModel)]="header.value" placeholder="">
+                </mat-form-field>
+                
+                <button mat-icon-button color="warn" (click)="removeHeader(i)" [disabled]="headerItems.length === 1 && !header.key && !header.value">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+            
+            <div class="add-header-button">
+              <button mat-button color="primary" (click)="addHeader()">
+                <mat-icon>add</mat-icon> Add Header
+              </button>
+            </div>
+          </div>
+        </mat-tab>
+        
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">code</mat-icon>
+            Body
+          </ng-template>
+          <div class="body-container">
+            <mat-form-field class="body-input">
+              <mat-label>Request Body (JSON)</mat-label>
+              <textarea matInput [(ngModel)]="request.body" rows="8" placeholder='{ "key": "value" }'></textarea>
+            </mat-form-field>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+      
+      <div class="actions">
+        <button mat-raised-button color="primary" (click)="send()" [disabled]="!request.url || isLoading">
+          <mat-icon>send</mat-icon> Send Request
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="response-card glow-effect" *ngIf="isLoading || response || error">
+    <mat-card-header>
+      <mat-card-title class="neon-text">Response</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div *ngIf="isLoading" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Sending request...</p>
+      </div>
+      
+      <div *ngIf="error" class="error-container">
+        <h3 class="error-message">Error: {{ error }}</h3>
+      </div>
+      
+      <div *ngIf="response && !isLoading" class="response-details">
+        <div class="response-status">
+          <strong>Status:</strong> {{ response.statusCode }}
+          <span class="response-time">{{ response.responseTimeMs }}ms</span>
+        </div>
+        
+        <mat-tab-group animationDuration="300ms">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">data_object</mat-icon>
+              Body
+            </ng-template>
+            <pre class="response-body">{{ response.body }}</pre>
+          </mat-tab>
+          
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">view_list</mat-icon>
+              Headers
+            </ng-template>
+            <div class="response-headers">
+              <div *ngFor="let header of response.headers | keyvalue" class="header-item">
+                <strong>{{ header.key }}:</strong> {{ header.value }}
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
