@@ -1,7 +1,3 @@
-# GitHub Configuration
-
-This directory contains GitHub-specific configuration files.
-
 ## Workflows
 
 The `workflows` directory contains GitHub Actions workflow configurations:
